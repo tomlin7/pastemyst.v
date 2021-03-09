@@ -90,27 +90,12 @@ struct CreatePasteConfig {
 }
 
 pub fn create_paste (config CreatePasteConfig) ?RawPaste {
-    println("config.paste")
-    println(config.paste)
-
-    println("encoded config.paste")
-    println(json.encode(config.paste))
-
 	mut request := http.new_request(.post, create_paste_endpoint, json.encode(config.paste)) ?
 	request.add_header('Content-Type','application/json')
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	}
 	response := request.do() ?
-    println("response")
-    println(response)
-
-    println("response text")
-    println(response.text)
-
-    println("decoded response.text")
-    println(json.decode(RawPaste, response.text))
-
 	return json.decode(RawPaste, response.text)
 }
 
@@ -125,17 +110,17 @@ pub fn create_paste (config CreatePasteConfig) ?RawPaste {
 // println(get_paste(id: 'xc9mvyaq', token: 'token'))
 // create public paste 
 
-fn main () {
-    mut new_pasty := Pasty {
-        language: "autodetect"
-        title   : "test"
-        code    : "print('test')"
-    }
-    mut new_paste := Paste {
-        title   : "test"
-        pasties : [new_pasty]
-    }
+// fn main () {
+//     mut new_pasty := Pasty {
+//         language: "autodetect"
+//         title   : "test"
+//         code    : "print('test')"
+//     }
+//     mut new_paste := Paste {
+//         title   : "test"
+//         pasties : [new_pasty]
+//     }
 
-    mut result := create_paste(paste: new_paste) ?
-    print(result.str())
-}
+//     mut result := create_paste(paste: new_paste) ?
+//     print(result.str())
+// }
