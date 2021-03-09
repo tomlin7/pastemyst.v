@@ -4,7 +4,7 @@
 |Features|Public|Private|Optimized|
 | :----: | :----:| :----:| :----:|
 |get_paste|✅|✅|✅|
-|create_paste|❌|❌|❌|
+|create_paste|✅|✅|❌|
 |edit_paste|❗|❌|❌|
 |delete_paste|❗|❌|❌|
 
