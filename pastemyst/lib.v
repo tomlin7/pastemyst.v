@@ -52,12 +52,20 @@ pub fn get_paste (id string) ?RawPaste {
 	// return json.decode(RawPaste, response.text)
 }
 
-// fn get_private_paste(id string, token string) ?string {
-// 	response := http.get(paste_endpoint + id)
-// 	return response.text
-// }
+pub fn get_private_paste (id string, token string) ?RawPaste {
+	mut request := http.new_request(.get, paste_endpoint + id, "") ?
+	request.add_header("Authorization", token)
+	response := request.do() ?
+	return json.decode(RawPaste, response.text)
+	// response := http.get(paste_endpoint + id) ?
+	// return json.decode(RawPaste, response.text)
+}
 
+// tests
+
+// get public paste
 println("Getting paste")
 println(get_paste('99is6n23'))
-// println("Getting private paste")
-// println(get_private_paste('99is6n23', 'token'))
+// get private paste
+println("Getting private paste")
+println(get_private_paste('xc9mvyaq', 'token'))
