@@ -1,13 +1,14 @@
 import json
 import net.http
 
-const paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
+const get_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
+const create_paste_endpoint = "https://paste.myst.rs/api/v2/paste"
 
 /*
  Pasty object
  */
-struct Pasty {
-	id       string [json: _id]
+struct RawPasty {
+	id       string [json: _id; skip]
 	language string [json: language ]
 	title    string [json: title    ]
 	code     string [json: code     ]
@@ -17,7 +18,7 @@ struct Pasty {
 Edit object
 */
 struct RawEdit {
-	id        string   [json: _id]
+	id        string   [json: _id; skip]
 	edit_id   string   [json: editId   ]
 	edit_type int      [json: editType ]
 	metadata  []string [json: metadata ]
@@ -30,7 +31,7 @@ struct RawEdit {
 Paste object
 */
 struct RawPaste {
-	id         string    [json: _id]
+	id         string    [json: _id; skip]
 	owner_id   string    [json: ownerId  ]
 	title      string    [json: title    ]
 	created_at u64       [json: createdAt]
@@ -40,32 +41,80 @@ struct RawPaste {
 	is_private bool      [json: isPrivate]
 	is_public  bool      [json: isPublic ]
 	tags       []string  [json: tags     ]
-	pasties    []Pasty   [json: pasties  ]
+	pasties    []RawPasty   [json: pasties  ]
 	edits      []RawEdit [json: edits    ]
 }
 
-pub fn get_paste (id string) ?RawPaste {
-	request := http.new_request(.get, paste_endpoint + id, "") ?
-	response := request.do() ?
-	return json.decode(RawPaste, response.text)
-	// response := http.get(paste_endpoint + id) ?
-	// return json.decode(RawPaste, response.text)
+pub struct Pasty {
+	language string [json: language ]
+	title    string [json: title    ]
+	code     string [json: code     ]
 }
 
-pub fn get_private_paste (id string, token string) ?RawPaste {
-	mut request := http.new_request(.get, paste_endpoint + id, "") ?
-	request.add_header("Authorization", token)
+pub struct Edit {
+	title      string  [json: title;       skip]
+	is_private bool    [json: isPrivate;   skip]
+	is_public  bool    [json: isPublic;    skip]
+	tags       string  [json: tags;        skip]
+	pasties    []Pasty [json: pasties; required]
+}
+
+pub struct Paste {
+	title      string  [json: title;       skip]
+	expires_in string  [json: expiresIn;   skip]
+	is_private bool    [json: isPrivate;   skip]
+	is_public  bool    [json: isPublic;    skip]
+	tags       string  [json: tags;        skip]
+	pasties    []Pasty [json: pasties; required]
+}
+
+
+struct GetPasteConfig {
+	id    string [required]
+	token string [skip]
+}
+
+pub fn get_paste (config GetPasteConfig) ?RawPaste {
+	mut request := http.new_request(.get, get_paste_endpoint + config.id, "") ?
+	if config.token != "" {
+		request.add_header("Authorization", config.token)
+	}
 	response := request.do() ?
 	return json.decode(RawPaste, response.text)
-	// response := http.get(paste_endpoint + id) ?
-	// return json.decode(RawPaste, response.text)
 }
+
+
+struct CreatePasteConfig {
+	paste Paste  [required]
+	token string [skip]
+}
+
+pub fn create_paste (config CreatePasteConfig) ?RawPaste {
+	mut request := http.new_request(.post, create_paste_endpoint, json.encode(config.paste)) ?
+	request.add_header('Content-Type','application/json')
+	if config.token != "" {
+		request.add_header("Authorization", config.token)
+	}
+	response := request.do() ?
+	return json.decode(RawPaste, response.text)
+}
+
 
 // tests
 
 // get public paste
-println("Getting paste")
-println(get_paste('99is6n23'))
+// println("Getting paste")
+// println(get_paste(id: '99is6n23'))
 // get private paste
-println("Getting private paste")
-println(get_private_paste('xc9mvyaq', 'token'))
+// println("Getting private paste")
+// println(get_paste(id: 'xc9mvyaq', token: 'token'))
+// create public paste 
+print(create_paste(paste: Paste{
+	pasties : [
+		Pasty{
+			"Python",
+			"example python",
+			"print('hello')"
+		}
+	]
+}))
