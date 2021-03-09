@@ -1,5 +1,6 @@
 import json
 import net.http
+import x.json2
 
 const get_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
 const create_paste_endpoint = "https://paste.myst.rs/api/v2/paste"
@@ -8,7 +9,7 @@ const create_paste_endpoint = "https://paste.myst.rs/api/v2/paste"
  Pasty object
  */
 struct RawPasty {
-	id       string [json: _id; skip]
+	id       string [json: _id      ]
 	language string [json: language ]
 	title    string [json: title    ]
 	code     string [json: code     ]
@@ -18,7 +19,7 @@ struct RawPasty {
 Edit object
 */
 struct RawEdit {
-	id        string   [json: _id; skip]
+	id        string   [json: _id      ]
 	edit_id   string   [json: editId   ]
 	edit_type int      [json: editType ]
 	metadata  []string [json: metadata ]
@@ -31,18 +32,18 @@ struct RawEdit {
 Paste object
 */
 struct RawPaste {
-	id         string    [json: _id; skip]
-	owner_id   string    [json: ownerId  ]
-	title      string    [json: title    ]
-	created_at u64       [json: createdAt]
-	expires_in string    [json: expiresIn]
-	deletes_at u64       [json: deletesAt]
-	stars      u64       [json: stars    ]
-	is_private bool      [json: isPrivate]
-	is_public  bool      [json: isPublic ]
-	tags       []string  [json: tags     ]
-	pasties    []RawPasty   [json: pasties  ]
-	edits      []RawEdit [json: edits    ]
+	id         string     [json: _id      ]
+	owner_id   string     [json: ownerId  ]
+	title      string     [json: title    ]
+	created_at u64        [json: createdAt]
+	expires_in string     [json: expiresIn]
+	deletes_at u64        [json: deletesAt]
+	stars      u64        [json: stars    ]
+	is_private bool       [json: isPrivate]
+	is_public  bool       [json: isPublic ]
+	tags       []string   [json: tags     ]
+	pasties    []RawPasty [json: pasties  ]
+	edits      []RawEdit  [json: edits    ]
 }
 
 pub struct Pasty {
@@ -104,17 +105,22 @@ pub fn create_paste (config CreatePasteConfig) ?RawPaste {
 
 // get public paste
 // println("Getting paste")
-// println(get_paste(id: '99is6n23'))
+println(get_paste(id: '99is6n23'))
 // get private paste
 // println("Getting private paste")
 // println(get_paste(id: 'xc9mvyaq', token: 'token'))
 // create public paste 
-print(create_paste(paste: Paste{
-	pasties : [
-		Pasty{
-			"Python",
-			"example python",
-			"print('hello')"
-		}
-	]
-}))
+// fn main () {
+// 	print(create_paste(
+// 			paste: Paste{
+// 				pasties : [
+// 					Pasty{
+// 						language : "autodetect",
+// 						title    : "examplepython",
+// 						code     : "print('hello')"
+// 					}
+// 				]
+// 			}
+// 		)
+// 	)
+// }
