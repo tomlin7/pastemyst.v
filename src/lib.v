@@ -6,27 +6,27 @@ import net.http
 const get_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
 const create_paste_endpoint = "https://paste.myst.rs/api/v2/paste"
 const delete_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
-
+const edit_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
 /*
  Pasty object
  */
 struct RawPasty {
-	id       string [json: _id      ]
-	language string [json: language ]
-	title    string [json: title    ]
-	code     string [json: code     ]
+	id       string [json: _id]
+	language string [json: language]
+	title    string [json: title]
+	code     string [json: code]
 }
 
 /*
 Edit object
 */
 struct RawEdit {
-	id        string   [json: _id      ]
-	edit_id   string   [json: editId   ]
-	edit_type int      [json: editType ]
-	metadata  []string [json: metadata ]
-	edit      string   [json: edit     ]
-	edited_at int      [json: editedAt ]
+	id        string   [json: _id]
+	edit_id   string   [json: editId]
+	edit_type int      [json: editType]
+	metadata  []string [json: metadata]
+	edit      string   [json: edit]
+	edited_at int      [json: editedAt]
 }
 
 
@@ -34,18 +34,18 @@ struct RawEdit {
 Paste object
 */
 struct RawPaste {
-	id         string     [json: _id      ]
-	owner_id   string     [json: ownerId  ]
-	title      string     [json: title    ]
+	id         string     [json: _id]
+	owner_id   string     [json: ownerId]
+	title      string     [json: title]
 	created_at u64        [json: createdAt]
 	expires_in string     [json: expiresIn]
 	deletes_at u64        [json: deletesAt]
-	stars      u64        [json: stars    ]
+	stars      u64        [json: stars]
 	is_private bool       [json: isPrivate]
-	is_public  bool       [json: isPublic ]
-	tags       []string   [json: tags     ]
-	pasties    []RawPasty [json: pasties  ]
-	edits      []RawEdit  [json: edits    ]
+	is_public  bool       [json: isPublic]
+	tags       []string   [json: tags]
+	pasties    []RawPasty [json: pasties]
+	edits      []RawEdit  [json: edits]
 }
 
 pub struct Pasty {
@@ -125,6 +125,23 @@ pub fn delete_paste (config DeletePasteConfig) ?bool {
 	}
 	response := request.do() ?
 	return response.status_code == http.Status.ok
+}
+
+struct EditPasteConfig {
+	id    string [required]
+	edit  Edit   [required]
+	token string [required]
+}
+
+pub fn edit_paste (config EditPasteConfig) ?RawEdit {
+	mut request := http.new_request(.patch, edit_paste_endpoint + config.id, json.encode(edit)) ?
+	if config.token != "" {
+		request.add_header("Authorization", config.token)
+	} else {
+		return error("Token not provided, editing is an account only feature.")
+	}
+	response := request.do() ?
+	return json.decode(RawEdit, response.text)
 }
 
 // tests
