@@ -97,6 +97,16 @@ pub struct RawLanguage {
 	color string   [json: color]
 }
 
+enum EditType {
+    title = 0,
+    pasty_title = 1,
+    pasty_language = 2,
+    pasty_content = 3,
+    pasty_added = 4,
+    pasty_removed = 5,
+}
+
+
 enum ExpiresIn {
 	never
 	one_hour
@@ -121,6 +131,8 @@ fn (e ExpiresIn) str() string {
 		.one_month  { "1m" }
 		.one_year   { "1y" }
 }
+
+
 
 pub struct GetPasteConfig {
 	id    string [required]
