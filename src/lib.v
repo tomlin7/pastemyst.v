@@ -3,10 +3,15 @@ module pastemyst
 import json
 import net.http
 
+const main_endpoint = "https://paste.myst.rs/api/v2"
+
 const get_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
 const create_paste_endpoint = "https://paste.myst.rs/api/v2/paste"
 const delete_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
 const edit_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
+
+const user_endpoint = "https://paste.myst.rs/api/v2/user/"
+
 /*
  Pasty object
  */
@@ -71,8 +76,18 @@ pub struct Paste {
 	pasties    []Pasty [json: pasties; required]
 }
 
+pub struct RawUser {
+	id               string  [json: _id]
+	username         string  [json: username]
+	avatar_url       string  [json: avatarUrl]
+	default_lang     string  [json: defaultLang]
+	public_profile   bool    [json: publicProfile]
+	supporter_length int     [json: supporterLength]
+	contributor      bool    [json: contributor]
+}
 
-struct GetPasteConfig {
+
+pub struct GetPasteConfig {
 	id    string [required]
 	token string
 }
@@ -92,7 +107,7 @@ pub fn get_paste (config GetPasteConfig) ?RawPaste {
 }
 
 
-struct CreatePasteConfig {
+pub struct CreatePasteConfig {
 	paste Paste  [required]
 	token string
 }
@@ -111,7 +126,7 @@ pub fn create_paste (config CreatePasteConfig) ?RawPaste {
 	return json.decode(RawPaste, response.text)
 }
 
-struct DeletePasteConfig {
+pub struct DeletePasteConfig {
 	id string    [required]
 	token string [required]
 }
@@ -127,7 +142,7 @@ pub fn delete_paste (config DeletePasteConfig) ?bool {
 	return response.status_code == http.Status.ok
 }
 
-struct EditPasteConfig {
+pub struct EditPasteConfig {
 	id    string [required]
 	edit  Edit   [required]
 	token string [required]
@@ -142,6 +157,18 @@ pub fn edit_paste (config EditPasteConfig) ?RawEdit {
 	}
 	response := request.do() ?
 	return json.decode(RawEdit, response.text)
+}
+
+pub fn user_exists (username string) ?bool {
+	mut request := http.new_request(.get, user_endpoint + username + "/exists") ?
+	response = request.do() ?
+	return response.status_code == http.Status.ok
+}
+
+pub fn get_user(username string) ?RawUser {
+	mut request := http.new_request(.get, user_endpoint + username) ?
+	response = request.do() ?
+	return json.decode(RawUser, response.text)
 }
 
 // tests
