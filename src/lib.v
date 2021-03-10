@@ -3,14 +3,17 @@ module pastemyst
 import json
 import net.http
 
-const main_endpoint = "https://paste.myst.rs/api/v2"
+const main_endpoint  = "https://paste.myst.rs/api/v2"
 
-const get_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
-const create_paste_endpoint = "https://paste.myst.rs/api/v2/paste"
-const delete_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
-const edit_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
+const get_paste_endpoint    = "$main_endpoint/paste/"
+const create_paste_endpoint = "$main_endpoint/paste"
+const delete_paste_endpoint = "$main_endpoint/paste/"
+const edit_paste_endpoint   = "$main_endpoint/paste/"
 
-const user_endpoint = "https://paste.myst.rs/api/v2/user/"
+const user_endpoint         = "$main_endpoint/user/"
+const data_language_endpoint_name           = "$main_endpoint/data/language"
+const data_language_endpoint_extension      = "$main_endpoint/data/languageExt"
+const time_endpoint_expires_in_to_unix_time = "$main_endpoint/time/expiresInToUnixTime"
 
 /*
  Pasty object
@@ -68,12 +71,12 @@ pub struct Edit {
 }
 
 pub struct Paste {
-	title      string  [json: title]     = "(Untitled)"
-	expires_in string  [json: expiresIn] = "never"
-	is_private bool    [json: isPrivate] = false
-	is_public  bool    [json: isPublic ] = false
-	tags       string  [json: tags]      = ""
-	pasties    []Pasty [json: pasties; required]
+	title      string     [json: title]     = "(Untitled)"
+	expires_in string     [json: expiresIn] = ExpiresIn.never
+	is_private bool       [json: isPrivate] = false
+	is_public  bool       [json: isPublic ] = false
+	tags       string     [json: tags]      = ""
+	pasties    []Pasty    [json: pasties; required]
 }
 
 pub struct RawUser {
@@ -86,6 +89,38 @@ pub struct RawUser {
 	contributor      bool    [json: contributor]
 }
 
+pub struct RawLanguage {
+	name  string   [json: name]
+	mode  string   [json: mode]
+	mimes []string [json: mimes]
+	ext   []string [json: ext]
+	color string   [json: color]
+}
+
+enum ExpiresIn {
+	never
+	one_hour
+	two_hours
+	ten_hours
+	one_day
+	two_days
+	one_week
+	one_month
+	one_year
+}
+
+fn (e ExpiresIn) str() string {
+    return match e {
+        .never      { "never" }
+        .one_hour   { "1h" }
+		.two_hours  { "2h" }
+		.ten_hours  { "10h" }
+		.one_day    { "1d" }
+		.two_days   { "2d" }
+		.one_week   { "1w" }
+		.one_month  { "1m" }
+		.one_year   { "1y" }
+}
 
 pub struct GetPasteConfig {
 	id    string [required]
@@ -161,15 +196,60 @@ pub fn edit_paste (config EditPasteConfig) ?RawEdit {
 
 pub fn user_exists (username string) ?bool {
 	mut request := http.new_request(.get, user_endpoint + username + "/exists") ?
-	response = request.do() ?
+	response := request.do() ?
 	return response.status_code == http.Status.ok
 }
 
 pub fn get_user(username string) ?RawUser {
 	mut request := http.new_request(.get, user_endpoint + username) ?
-	response = request.do() ?
-	return json.decode(RawUser, response.text)
+	response := request.do() ?
+	if response.status_code == http.Status.ok {
+		return json.decode(RawUser, response.text)
+	} else {
+		return error("Error while fetching user with the name $username")
+	}
 }
+
+pub struct GetLanguageConfig {
+	name      string
+	extension string
+}
+
+pub fn get_language (config GetLanguageConfig) ?RawLanguage {
+	if config.name != "" {
+		mut request := http.new_request(.get, data_language_endpoint_name + "?name=" + config.name, "") ?
+	} else if config.extension != "" {
+		mut request := http.new_request(.get, data_language_endpoint_extension + "?extension=" + config.extension, "") ?
+	}
+	response := request.do() ?
+	if response.status_code == http.Status.ok {
+		return json.decode(RawLanguage, response.text)
+	} else {
+		return error("Error while fetching language details")
+	}	
+}
+
+pub struct ExpiresInToUnixTimeStampConfig {
+	created_at int
+	expires_in ExpiresIn
+}
+
+pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?int {
+	if (config.created_at == 0) {
+		return error("Invalid arguments passed or arguments passed are not enough")
+	} else {
+		mut request := http.new_request(.get, time_endpoint_expires_in_to_unix_time + "?createdAt=" + config.created_at + "&expiresIn=" + config.expires_in.str()) ?
+		response := request.do()
+
+		if response.status_code == http.Status.ok {
+			return request.text
+		} else {
+			return error("Error while converting passed arguments to unix timestamp")
+		}
+	}
+}
+
+
 
 // tests
 
