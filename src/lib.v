@@ -1,8 +1,11 @@
+module pastemyst
+
 import json
 import net.http
 
 const get_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
 const create_paste_endpoint = "https://paste.myst.rs/api/v2/paste"
+const delete_paste_endpoint = "https://paste.myst.rs/api/v2/paste/"
 
 /*
  Pasty object
@@ -92,13 +95,32 @@ struct CreatePasteConfig {
 pub fn create_paste (config CreatePasteConfig) ?RawPaste {
 	mut request := http.new_request(.post, create_paste_endpoint, json.encode(config.paste)) ?
 	request.add_header('Content-Type','application/json')
+	
+	if config.token == "" && (config.paste.is_private || config.paste.is_public || config.paste.tags != "") {
+		return error("Using account only features, but the token isn't provided.")
+	}
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	}
-	response := request.do() ?
+	response := request.do() ? 
 	return json.decode(RawPaste, response.text)
 }
 
+struct DeletePasteConfig {
+	id string    [required]
+	token string [required]
+}
+
+pub fn delete_paste (config DeletePasteConfig) ?bool {
+	mut request := http.new_request(.delete, delete_paste_endpoint + config.id, "") ?
+	if config.token != "" {
+		request.add_header("Authorization", config.token)
+	} else {
+		return error("Token not provided, deletion is an account only feature.")
+	}
+	response := request.do() ?
+	return response.status_code == 200
+}
 
 // tests
 
