@@ -83,7 +83,12 @@ pub fn get_paste (config GetPasteConfig) ?RawPaste {
 		request.add_header("Authorization", config.token)
 	}
 	response := request.do() ?
-	return json.decode(RawPaste, response.text)
+	if response.status_code != http.Status.not_found {
+		return json.decode(RawPaste, response.text)
+	} else {
+		println("Paste not found, check the id and token given")
+		return none
+	}
 }
 
 
@@ -119,7 +124,7 @@ pub fn delete_paste (config DeletePasteConfig) ?bool {
 		return error("Token not provided, deletion is an account only feature.")
 	}
 	response := request.do() ?
-	return response.status_code == 200
+	return response.status_code == http.Status.ok
 }
 
 // tests
