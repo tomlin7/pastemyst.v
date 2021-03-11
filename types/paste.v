@@ -17,7 +17,7 @@ struct RawPaste {
 
 pub struct Paste {
 	title      string     [json: title]     = "(Untitled)"
-	expires_in string     [json: expiresIn] = ExpiresIn.never
+	expires_in string     [json: expiresIn] = "never"
 	is_private bool       [json: isPrivate] = false
 	is_public  bool       [json: isPublic ] = false
 	tags       string     [json: tags]      = ""
