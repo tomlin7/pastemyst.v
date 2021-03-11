@@ -6,7 +6,7 @@ import net.http
 import billyeatcookies.pastemyst
 import billyeatcookies.pastemyst.types
 
-const time_endpoint_expires_in_to_unix_time = "$main_endpoint/time/expiresInToUnixTime"
+const time_endpoint_expires_in_to_unix_time = "$pastemyst.main_endpoint/time/expiresInToUnixTime"
 
 
 pub struct ExpiresInToUnixTimeStampConfig {
@@ -15,14 +15,14 @@ pub struct ExpiresInToUnixTimeStampConfig {
 }
 
 pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?int {
-	if (config.created_at == 0) {
+	if config.created_at == 0 {
 		return error("Invalid arguments passed or arguments passed are not enough")
 	} else {
-		mut request := http.new_request(.get, time_endpoint_expires_in_to_unix_time + "?createdAt=" + config.created_at + "&expiresIn=" + config.expires_in.str()) ?
-		response := request.do()
+		mut request := http.new_request(.get, time_endpoint_expires_in_to_unix_time + "?createdAt=" + config.created_at + "&expiresIn=" + config.expires_in.str() ,"") ?
+		response := request.do() ?
 
-		if response.status_code == http.Status.ok {
-			return request.text
+		if response.status_code == int(http.Status.ok) {
+			return response.text
 		} else {
 			return error("Error while converting passed arguments to unix timestamp")
 		}

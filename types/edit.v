@@ -1,20 +1,20 @@
 module types
 
 struct RawEdit {
-	id        string   [json: _id]
-	edit_id   string   [json: editId]
-	edit_type int      [json: editType]
-	metadata  []string [json: metadata]
-	edit      string   [json: edit]
-	edited_at int      [json: editedAt]
+	pub: id        string   [json: _id]
+	pub: edit_id   string   [json: editId]
+	pub: edit_type int      [json: editType]
+	pub: metadata  []string [json: metadata]
+	pub: edit      string   [json: edit]
+	pub: edited_at int      [json: editedAt]
 }
 
 pub struct Edit {
-	title      string  [json: title]
-	is_private bool    [json: isPrivate]
-	is_public  bool    [json: isPublic]
-	tags       string  [json: tags]
-	pasties    []Pasty [json: pasties]
+	pub: title      string  [json: title]
+	pub: is_private bool    [json: isPrivate]
+	pub: is_public  bool    [json: isPublic]
+	pub: tags       string  [json: tags]
+	pub: pasties    []Pasty [json: pasties]
 }
 
 enum EditType {

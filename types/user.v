@@ -1,12 +1,12 @@
 module types
 
 pub struct RawUser {
-	id               string  [json: _id]
-	username         string  [json: username]
-	avatar_url       string  [json: avatarUrl]
-	default_lang     string  [json: defaultLang]
-	public_profile   bool    [json: publicProfile]
-	supporter_length int     [json: supporterLength]
-	contributor      bool    [json: contributor]
+	pub: id               string  [json: _id]
+	pub: username         string  [json: username]
+	pub: avatar_url       string  [json: avatarUrl]
+	pub: default_lang     string  [json: defaultLang]
+	pub: public_profile   bool    [json: publicProfile]
+	pub: supporter_length int     [json: supporterLength]
+	pub: contributor      bool    [json: contributor]
 }
 

@@ -73,7 +73,7 @@ pub struct EditPasteConfig {
 }
 
 pub fn edit_paste (config EditPasteConfig) ?types.RawEdit {
-	mut request := http.new_request(.patch, edit_paste_endpoint + config.id, json.encode(edit)) ?
+	mut request := http.new_request(.patch, edit_paste_endpoint + config.id, json.encode(config.edit)) ?
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	} else {
