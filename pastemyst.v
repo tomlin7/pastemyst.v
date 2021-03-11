@@ -1,6 +1,8 @@
 module pastemyst
 
-import src
+import types
+import endpoints 
+
 import tests
 
 
