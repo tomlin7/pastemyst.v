@@ -16,16 +16,24 @@ pub struct GetLanguageConfig {
 }
 
 pub fn get_language (config GetLanguageConfig) ?types.RawLanguage {
-	mut request
 	if config.name != "" {
 		request = http.new_request(.get, data_language_endpoint_name + "?name=" + config.name, "") ?
+		response := request.do() ?
+
+		if response.status_code == http.Status.ok {
+			return json.decode(RawLanguage, response.text)
+		} else {
+			return error("Error while fetching language details")
+		}
 	} else if config.extension != "" {
 		request = http.new_request(.get, data_language_endpoint_extension + "?extension=" + config.extension, "") ?
+		response := request.do() ?
+		
+		if response.status_code == http.Status.ok {
+			return json.decode(RawLanguage, response.text)
+		} else {
+			return error("Error while fetching language details")
+		}
 	}
-	response := request.do() ?
-	if response.status_code == http.Status.ok {
-		return json.decode(RawLanguage, response.text)
-	} else {
-		return error("Error while fetching language details")
-	}	
+		
 }
