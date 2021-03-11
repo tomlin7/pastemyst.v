@@ -20,8 +20,8 @@ pub fn get_language (config GetLanguageConfig) ?types.RawLanguage {
 		mut request := http.new_request(.get, data_language_endpoint_name + "?name=" + config.name, "") ?
 		response := request.do() ?
 
-		if response.status_code == http.Status.ok {
-			return json.decode(RawLanguage, response.text)
+		if response.status_code == int(http.Status.ok) {
+			return json.decode(types.RawLanguage, response.text)
 		} else {
 			return error("Error while fetching language details")
 		}
@@ -29,8 +29,8 @@ pub fn get_language (config GetLanguageConfig) ?types.RawLanguage {
 		mut request := http.new_request(.get, data_language_endpoint_extension + "?extension=" + config.extension, "") ?
 		response := request.do() ?
 
-		if response.status_code == http.Status.ok {
-			return json.decode(RawLanguage, response.text)
+		if response.status_code == int(http.Status.ok) {
+			return json.decode(types.RawLanguage, response.text)
 		} else {
 			return error("Error while fetching language details")
 		}
