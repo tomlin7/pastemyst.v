@@ -18,10 +18,10 @@ pub struct Edit {
 }
 
 enum EditType {
-    title = 0,
-    pasty_title = 1,
-    pasty_language = 2,
-    pasty_content = 3,
-    pasty_added = 4,
-    pasty_removed = 5,
+    title = 0
+    pasty_title = 1
+    pasty_language = 2
+    pasty_content = 3
+    pasty_added = 4
+    pasty_removed = 5
 }
