@@ -1,13 +1,17 @@
 module endpoints
 
+import json
+import net.http
+
 import billyeatcookies.pastemyst
+import billyeatcookies.pastemyst.types
 
 const time_endpoint_expires_in_to_unix_time = "$main_endpoint/time/expiresInToUnixTime"
 
 
 pub struct ExpiresInToUnixTimeStampConfig {
 	created_at int
-	expires_in ExpiresIn
+	expires_in types.ExpiresIn
 }
 
 pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?int {
