@@ -1,6 +1,5 @@
 module endpoints
 
-import json
 import net.http
 
 import billyeatcookies.pastemyst
