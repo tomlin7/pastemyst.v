@@ -1,6 +1,6 @@
 module types
 
-enum ExpiresIn {
+pub enum ExpiresIn {
 	never
 	one_hour
 	two_hours
@@ -12,7 +12,7 @@ enum ExpiresIn {
 	one_year
 }
 
-fn (e ExpiresIn) str() string {
+pub fn (e ExpiresIn) str() string {
     return match e {
         .never      { "never" }
         .one_hour   { "1h" }

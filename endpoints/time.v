@@ -14,7 +14,7 @@ pub struct ExpiresInToUnixTimeStampConfig {
 	expires_in types.ExpiresIn
 }
 
-pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?int {
+pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?string {
 	if config.created_at == 0 {
 		return error("Invalid arguments passed or arguments passed are not enough")
 	} else {
@@ -22,7 +22,7 @@ pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?int
 		response := request.do() ?
 
 		if response.status_code == int(http.Status.ok) {
-			return int(response.text)
+			return response.text
 		} else {
 			return error("Error while converting passed arguments to unix timestamp")
 		}
