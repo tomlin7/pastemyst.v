@@ -1,4 +1,4 @@
-module types
+module Types
 
 struct RawPaste {
 	id         string     [json: _id]

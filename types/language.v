@@ -1,4 +1,4 @@
-module types
+module Types
 
 pub struct RawLanguage {
 	name  string   [json: name]
