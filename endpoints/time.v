@@ -18,11 +18,11 @@ pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?int
 	if config.created_at == 0 {
 		return error("Invalid arguments passed or arguments passed are not enough")
 	} else {
-		mut request := http.new_request(.get, time_endpoint_expires_in_to_unix_time + "?createdAt=" + config.created_at + "&expiresIn=" + config.expires_in.str() ,"") ?
+		mut request := http.new_request(.get, time_endpoint_expires_in_to_unix_time + "?createdAt=" + config.created_at.str() + "&expiresIn=" + config.expires_in.str() ,"") ?
 		response := request.do() ?
 
 		if response.status_code == int(http.Status.ok) {
-			return response.text
+			return int(response.text)
 		} else {
 			return error("Error while converting passed arguments to unix timestamp")
 		}
