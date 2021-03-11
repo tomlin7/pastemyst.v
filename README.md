@@ -11,6 +11,6 @@
 ### Misc Features
 | Features|Available|Optimized|
 |:---:|:---:|:---:|
-|check_user|❌|❌|
-|user_exists|❌|❌|
-|get_language|❌|❌|
+|check_user|✅|✅|
+|user_exists|✅|✅|
+|get_language|✅|✅|
