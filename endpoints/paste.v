@@ -1,7 +1,7 @@
 module endpoints
 
 import billyeatcookies.pastemyst
-import billyeatcookies.pastemyst.Types
+import billyeatcookies.pastemyst.types
 
 const get_paste_endpoint    = "$pastemyst.main_endpoint/paste/"
 const create_paste_endpoint = "$pastemyst.main_endpoint/paste"
