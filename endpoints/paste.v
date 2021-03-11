@@ -14,14 +14,14 @@ pub struct GetPasteConfig {
 	token string
 }
 
-pub fn get_paste (config GetPasteConfig) ?RawPaste {
+pub fn get_paste (config GetPasteConfig) ?types.RawPaste {
 	mut request := pastemyst.http.new_request(.get, get_paste_endpoint + config.id, "") ?
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	}
 	response := request.do() ?
 	if response.status_code != pastemyst.http.Status.not_found {
-		return json.decode(RawPaste, response.text)
+		return json.decode(types.RawPaste, response.text)
 	} else {
 		println("Paste not found, check the id and token given")
 		return none
@@ -33,7 +33,7 @@ pub struct CreatePasteConfig {
 	token string
 }
 
-pub fn create_paste (config CreatePasteConfig) ?RawPaste {
+pub fn create_paste (config CreatePasteConfig) ?types.RawPaste {
 	mut request := pastemyst.http.new_request(.post, create_paste_endpoint, pastemyst.json.encode(config.paste)) ?
 	request.add_header('Content-Type','application/json')
 	
@@ -44,7 +44,7 @@ pub fn create_paste (config CreatePasteConfig) ?RawPaste {
 		request.add_header("Authorization", config.token)
 	}
 	response := request.do() ? 
-	return pastemyst.json.decode(RawPaste, response.text)
+	return pastemyst.json.decode(types.RawPaste, response.text)
 }
 
 pub struct DeletePasteConfig {
@@ -69,7 +69,7 @@ pub struct EditPasteConfig {
 	token string [required]
 }
 
-pub fn edit_paste (config EditPasteConfig) ?RawEdit {
+pub fn edit_paste (config EditPasteConfig) ?types.RawEdit {
 	mut request := pastemyst.http.new_request(.patch, edit_paste_endpoint + config.id, pastemyst.json.encode(edit)) ?
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
@@ -77,5 +77,5 @@ pub fn edit_paste (config EditPasteConfig) ?RawEdit {
 		return error("Token not provided, editing is an account only feature.")
 	}
 	response := request.do() ?
-	return pastemyst.json.decode(RawEdit, response.text)
+	return pastemyst.json.decode(types.RawEdit, response.text)
 }

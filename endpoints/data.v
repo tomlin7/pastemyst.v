@@ -1,6 +1,7 @@
 module endpoints
 
 import billyeatcookies.pastemyst
+import billyeatcookies.pastemyst.types
 
 const data_language_endpoint_name           = "$pastemyst.main_endpoint/data/language"
 const data_language_endpoint_extension      = "$pastemyst.main_endpoint/data/languageExt"
@@ -11,7 +12,7 @@ pub struct GetLanguageConfig {
 	extension string
 }
 
-pub fn get_language (config GetLanguageConfig) ?RawLanguage {
+pub fn get_language (config GetLanguageConfig) ?types.RawLanguage {
 	if config.name != "" {
 		mut request := pastemyst.http.new_request(.get, data_language_endpoint_name + "?name=" + config.name, "") ?
 	} else if config.extension != "" {
