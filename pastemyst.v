@@ -9,4 +9,4 @@ module pastemyst
 import json
 import net.http
 
-const main_endpoint  = "https://paste.myst.rs/api/v2"
+pub const main_endpoint  = "https://paste.myst.rs/api/v2"
