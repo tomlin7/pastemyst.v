@@ -1,5 +1,7 @@
 module endpoints
 
+import billyeatcookies.pastemyst
+
 const user_endpoint         = "$main_endpoint/user/"
 
 
