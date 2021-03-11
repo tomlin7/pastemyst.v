@@ -1,6 +1,7 @@
 module endpoints
 
 import billyeatcookies.pastemyst
+import billyeatcookies.pastemyst.Types
 
 const get_paste_endpoint    = "$pastemyst.main_endpoint/paste/"
 const create_paste_endpoint = "$pastemyst.main_endpoint/paste"
@@ -28,7 +29,7 @@ pub fn get_paste (config GetPasteConfig) ?RawPaste {
 }
 
 pub struct CreatePasteConfig {
-	paste pastemyst.types.Paste  [required]
+	paste Types.Paste  [required]
 	token string
 }
 
@@ -64,7 +65,7 @@ pub fn delete_paste (config DeletePasteConfig) ?bool {
 
 pub struct EditPasteConfig {
 	id    string [required]
-	edit  pastemyst.types.Edit   [required]
+	edit  Types.Edit   [required]
 	token string [required]
 }
 
