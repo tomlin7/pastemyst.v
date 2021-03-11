@@ -23,4 +23,5 @@ fn (e ExpiresIn) str() string {
 		.one_week   { "1w" }
 		.one_month  { "1m" }
 		.one_year   { "1y" }
+	}
 }
