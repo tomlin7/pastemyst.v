@@ -29,7 +29,7 @@ pub fn get_paste (config GetPasteConfig) ?RawPaste {
 }
 
 pub struct CreatePasteConfig {
-	paste Types.Paste  [required]
+	paste types.Paste  [required]
 	token string
 }
 
@@ -65,7 +65,7 @@ pub fn delete_paste (config DeletePasteConfig) ?bool {
 
 pub struct EditPasteConfig {
 	id    string [required]
-	edit  Types.Edit   [required]
+	edit  types.Edit   [required]
 	token string [required]
 }
 
