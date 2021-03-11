@@ -16,10 +16,11 @@ pub struct GetLanguageConfig {
 }
 
 pub fn get_language (config GetLanguageConfig) ?types.RawLanguage {
+	mut request := http.request
 	if config.name != "" {
-		mut request := http.new_request(.get, data_language_endpoint_name + "?name=" + config.name, "") ?
+		request = http.new_request(.get, data_language_endpoint_name + "?name=" + config.name, "") ?
 	} else if config.extension != "" {
-		mut request := http.new_request(.get, data_language_endpoint_extension + "?extension=" + config.extension, "") ?
+		request = http.new_request(.get, data_language_endpoint_extension + "?extension=" + config.extension, "") ?
 	}
 	response := request.do() ?
 	if response.status_code == http.Status.ok {
