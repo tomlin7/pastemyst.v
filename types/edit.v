@@ -1,4 +1,4 @@
-module Types
+module types
 
 struct RawEdit {
 	id        string   [json: _id]

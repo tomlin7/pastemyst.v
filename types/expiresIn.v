@@ -1,4 +1,4 @@
-module Types
+module types
 
 enum ExpiresIn {
 	never

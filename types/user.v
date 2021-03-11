@@ -1,4 +1,4 @@
-module Types
+module types
 
 pub struct RawUser {
 	id               string  [json: _id]
