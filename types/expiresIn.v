@@ -1,4 +1,4 @@
-module pastemyst
+module types
 
 enum ExpiresIn {
 	never

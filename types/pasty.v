@@ -1,4 +1,4 @@
-module pastemyst
+module types
 
 struct RawPasty {
 	id       string [json: _id]
