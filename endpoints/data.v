@@ -1,4 +1,4 @@
-module pastemyst
+module endpoints
 
 const data_language_endpoint_name           = "$main_endpoint/data/language"
 const data_language_endpoint_extension      = "$main_endpoint/data/languageExt"

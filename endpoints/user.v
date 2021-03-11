@@ -1,4 +1,4 @@
-module pastemyst
+module endpoints
 
 const user_endpoint         = "$main_endpoint/user/"
 

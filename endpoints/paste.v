@@ -1,4 +1,4 @@
-module pastemyst
+module endpoints
 
 const get_paste_endpoint    = "$main_endpoint/paste/"
 const create_paste_endpoint = "$main_endpoint/paste"

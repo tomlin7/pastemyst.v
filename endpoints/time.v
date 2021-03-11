@@ -1,4 +1,4 @@
-module pastemyst
+module endpoints
 
 const time_endpoint_expires_in_to_unix_time = "$main_endpoint/time/expiresInToUnixTime"
 
