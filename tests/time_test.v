@@ -3,7 +3,7 @@ module tests
 import billyeatcookies.pastemyst.endpoints
 import billyeatcookies.pastemyst.types
 
-struct TestTemplate {]
+struct TestTemplate {
 	created_at int
 	expires_in types.ExpiresIn
 	expected   int
