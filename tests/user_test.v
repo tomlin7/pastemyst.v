@@ -1,6 +1,7 @@
 module tests
 
 import billyeatcookies.pastemyst.endpoints
+import billyeatcookies.pastemyst.types
 
 const username = $env('API_USERNAME')
 
@@ -14,8 +15,8 @@ fn test_user_exists () ? {
 
 fn test_get_user () ? {
 	mut result := endpoints.get_user(username) ?
-	assert result !is bool
-	if result !is bool {
+	assert result is types.RawUser
+	if result is types.RawUser {
 		assert result.username == username
 	}
 }
