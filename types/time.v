@@ -1,5 +1,7 @@
 module types
 
+import json
+
 pub struct RawTime {
-	result int
+	result int [json: result]
 }
