@@ -1,9 +1,11 @@
 module tests
 
+import os
+
 import billyeatcookies.pastemyst.endpoints
 import billyeatcookies.pastemyst.types
 
-const username = $env('API_USERNAME')
+const username = os.get_env('API_USERNAME')
 
 fn testsuite_begin () {
 	println("No API username was set, related tests will be skipped.")
