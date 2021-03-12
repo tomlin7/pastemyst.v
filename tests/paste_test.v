@@ -67,7 +67,7 @@ fn test_create_public_paste () ? {
 	if mut created_paste is types.RawPaste {
 		assert created_paste.title == title
 		
-		remove_paste(created_paste.id)
+		remove_paste(created_paste.id) ?
 	}
 }
 
@@ -87,7 +87,7 @@ fn test_create_private_paste () ? {
 		assert created_paste.title == title
 		assert created_paste.is_private == true
 
-		remove_paste(created_paste.id)
+		remove_paste(created_paste.id) ?
 	}
 }
 
@@ -120,13 +120,13 @@ fn test_edit_paste () ? {
 			tags       : "edit, test",
 			pasties    : [sample_pasty]
 		}
-		mut edited_paste := endpoints.edit_paste(id: paste._id, edit: desired_edit, token: api_token) ?
+		mut edited_paste := endpoints.edit_paste(id: create_paste.id, edit: desired_edit, token: api_token) ?
 
 		assert edited_paste is types.RawPaste
 		if mut edited_paste is types.RawPaste {
-			assert editedPaste.title == desiredTitle
+			assert edited_paste.title == desiredTitle
 
-			remove_paste(created_paste.id)
+			remove_paste(created_paste.id) ?
 		}
 	}
 }
@@ -136,7 +136,7 @@ fn remove_paste(id string) ? {
 	if mut is_paste_deleted {
 		println("Paste deleted")
 	} else {
-		println("Couldn't delete paste $created_paste.id")
+		println("Couldn't delete paste $id")
 	}
 }
 
