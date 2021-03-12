@@ -25,10 +25,8 @@ jobs:
         run: cd /usr/local/vlang ; sudo make && sudo ./v symlink
       - name: Install pastemyst
         run: sudo v install billyeatcookies.pastemyst
-      - name: List
-        run: ls
       - name: Test pastemyst
-        run: v -stats test tests/
+        run: sudo v -stats test tests/
         env:
           API_USERNAME: ${{ secrets.API_USERNAME }}
           API_TOKEN: ${{ secrets.API_TOKEN }}
