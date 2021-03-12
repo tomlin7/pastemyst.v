@@ -24,7 +24,7 @@ jobs:
       - name: Build and symlink vlang
         run: cd /usr/local/vlang ; sudo make && sudo ./v symlink
       - name: Install pastemyst
-        run: v install billyeatcookies.pastemyst
+        run: sudo v install billyeatcookies.pastemyst
       - name: test pastemyst
         run: cd /home/runner/work/pastemyst-v/pastemyst-v/tests; v -stats -test .
         env:
