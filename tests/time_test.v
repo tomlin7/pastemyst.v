@@ -35,8 +35,8 @@ fn test_expires_in_to_unix_timestamp () ? {
 			created_at : preferred_test.created_at,
 			expires_in : preferred_test.expires_in
 		) ?
-		if expiry !is bool {
-			assert int(expiry) == preferred_test.expected
+		if mut expiry !is bool {
+			assert expiry == preferred_test.expected
 		}
 	}
 }
