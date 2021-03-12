@@ -120,11 +120,11 @@ fn test_edit_paste () ? {
 			tags       : "edit, test",
 			pasties    : [sample_pasty]
 		}
-		mut edited_paste := endpoints.edit_paste(id: create_paste.id, edit: desired_edit, token: api_token) ?
+		mut edited_paste := endpoints.edit_paste(id: created_paste.id, edit: desired_edit, token: api_token) ?
 
 		assert edited_paste is types.RawPaste
 		if mut edited_paste is types.RawPaste {
-			assert edited_paste.title == desiredTitle
+			assert edited_paste.title == desired_title
 
 			remove_paste(created_paste.id) ?
 		}
