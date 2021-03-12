@@ -19,21 +19,21 @@ fn testsuite_begin () {
 }
 
 
-fn test_get_public_paste () {
+fn test_get_public_paste () ? {
 	mut paste := endpoints.get_paste(id: "99is6n23") ?
 
 	assert paste !is bool
 	assert paste.title == "public paste example title" 
 }
 
-fn test_get_private_paste () {
+fn test_get_private_paste () ? {
 	mut paste := endpoints.get_paste(id: "grajzo1h", token: api_token) ?
 
 	assert paste !is bool
 	assert paste.title == "private paste example title" 
 }
 
-fn test_create_public_paste () {
+fn test_create_public_paste () ? {
 	mut title     := "[pastemyst.v] Public Paste Create Test"
 	mut new_paste := types.Paste {
 		title      : title,
@@ -51,7 +51,7 @@ fn test_create_public_paste () {
 	}
 }
 
-fn test_create_private_paste () {
+fn test_create_private_paste () ? {
 	mut title     := "[pastemyst.v] Private Paste Create Test"
 	mut new_paste := types.Paste {
 		title      : title,
@@ -60,7 +60,7 @@ fn test_create_private_paste () {
 		pasties    : [sample_pasty]
 	}
 
-	created_paste := endpoints.created_paste(paste: new_paste, token: api_token) ?
+	created_paste := endpoints.create_paste(paste: new_paste, token: api_token) ?
 
 	assert created_paste !is bool
 	if created_paste !is bool {
@@ -72,7 +72,7 @@ fn test_create_private_paste () {
 }
 
 
-fn test_delete_paste () {
+fn test_delete_paste () ? {
 	mut new_paste := types.Paste {
 		pasties   : [sample_pasty]
 	}
@@ -85,7 +85,7 @@ fn test_delete_paste () {
 	}
 }
 
-fn test_edit_paste () {
+fn test_edit_paste () ? {
 	mut new_paste := types.Paste {
 		pasties   : [sample_pasty]
 	}
@@ -112,10 +112,10 @@ fn test_edit_paste () {
 }
 
 
-fn testsuite_end () {
+fn testsuite_end () ? {
 	if created_pastes.len > 0 {
 		println("==== Paste Cleanup ====")
-		for create_paste in created_pastes {
+		for created_paste in created_pastes {
 			println("Cleaning up paste with id: $created_paste.id, title: $created_paste.title")
 			mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
 		}

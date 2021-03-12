@@ -9,7 +9,7 @@ struct TestTemplate {
 	expected   int
 }
 
-fn test_expires_in_to_unix_timestamp () {
+fn test_expires_in_to_unix_timestamp () ? {
 	mut test_a := TestTemplate {
 		created_at : 1615242814,
 		expires_in : types.ExpiresIn.two_hours,
@@ -35,6 +35,8 @@ fn test_expires_in_to_unix_timestamp () {
 			created_at : preferred_test.created_at,
 			expires_in : preferred_test.expires_in
 		) ?
-		assert expiry == preferred_test.expected
+		if expiry !is bool {
+			assert int(expiry) == preferred_test.expected
+		}
 	}
 }
