@@ -28,7 +28,7 @@ jobs:
       - name: List
         run: ls
       - name: Test pastemyst
-        run: cd tests; v -stats -test .
+        run: v -stats test tests/
         env:
           API_USERNAME: ${{ secrets.API_USERNAME }}
           API_TOKEN: ${{ secrets.API_TOKEN }}
