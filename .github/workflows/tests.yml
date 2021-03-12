@@ -26,9 +26,8 @@ jobs:
       - name: Install pastemyst
         run: sudo v install billyeatcookies.pastemyst
       - name: Test PasteMyst
-        run: sudo v -stats test tests/
         env:
           API_USERNAME: ${{ secrets.API_USERNAME }}
           API_TOKEN: ${{ secrets.API_TOKEN }}
-
+        run: sudo v -stats test tests/
     
