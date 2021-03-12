@@ -16,7 +16,7 @@ fn (mut c Client) get_all_created_pastes () ?[]string {
     return created_pastes.pastes
 }
 
-const client := Client{}
+const client = Client{}
 
 const sample_pasty = types.Pasty{
 	title: "Test Pasty",
