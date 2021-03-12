@@ -12,6 +12,13 @@ const sample_pasty = types.Pasty{
 }
 const api_token = $env('API_TOKEN')
 
+fn testsuite_begin () {
+	if api_token == "" {
+		println("No API token was supplied in the environment variables. " + "Unit tests that require authorization may not pass.")
+	}
+}
+
+
 fn test_get_public_paste () {
 	mut paste := endpoints.get_paste(id: "99is6n23") ?
 
