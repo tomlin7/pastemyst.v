@@ -14,8 +14,8 @@ mut:
 fn (mut client Client) add_paste (paste types.Paste) {
     client.created_pastes << paste
 }
-fn (mut c Client) get_all_created_pastes () ?[]string {
-    return created_pastes.pastes
+fn (mut client Client) get_all_created_pastes () ?[]string {
+    return client.created_pastes
 }
 
 const client = Client{}
