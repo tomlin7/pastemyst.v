@@ -23,7 +23,7 @@ fn test_get_public_paste () ? {
 	mut paste := endpoints.get_paste(id: "99is6n23") ?
 
 	assert paste is types.RawPaste
-	if paste is types.RawPaste {
+	if mut paste is types.RawPaste {
 		assert paste.title == "public paste example title" 
 	}
 }
@@ -32,7 +32,7 @@ fn test_get_private_paste () ? {
 	mut paste := endpoints.get_paste(id: "grajzo1h", token: api_token) ?
 
 	assert paste is types.RawPaste
-	if paste is types.RawPaste {
+	if mut paste is types.RawPaste {
 		assert paste.title == "private paste example title" 
 	}
 }
@@ -48,7 +48,7 @@ fn test_create_public_paste () ? {
 	mut created_paste := endpoints.create_paste(paste: new_paste) ?
 
 	assert created_paste is types.RawPaste
-	if created_paste is types.RawPaste {
+	if mut created_paste is types.RawPaste {
 		assert created_paste.title == title
 		
 		created_pastes << created_paste
@@ -67,7 +67,7 @@ fn test_create_private_paste () ? {
 	created_paste := endpoints.create_paste(paste: new_paste, token: api_token) ?
 
 	assert created_paste is types.RawPaste
-	if created_paste is types.RawPaste {
+	if mut created_paste is types.RawPaste {
 		assert created_paste.title == title
 		assert created_paste.is_private == true
 
@@ -83,7 +83,7 @@ fn test_delete_paste () ? {
 	mut created_paste := endpoints.create_paste(paste: new_paste) ?
 
 	assert created_paste is types.RawPaste
-	if created_paste is types.RawPaste {
+	if mut created_paste is types.RawPaste {
 		mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
 		assert is_paste_deleted == true
 	}
@@ -97,7 +97,7 @@ fn test_edit_paste () ? {
 
 	assert created_paste is types.RawPaste
 
-	if created_paste is types.RawPaste {
+	if mut created_paste is types.RawPaste {
 		mut desired_title := "[pastemyst.v] Paste Edit Test"
 		mut desired_edit  := types.Edit {
 			title      : desired_title,
@@ -107,7 +107,7 @@ fn test_edit_paste () ? {
 		mut edited_paste := endpoints.edit_paste(id: paste._id, edit: desired_edit, token: api_token) ?
 
 		assert edited_paste is types.RawPaste
-		if edited_paste is types.RawPaste {
+		if mut edited_paste is types.RawPaste {
 			assert editedPaste.title == desiredTitle
 
 			created_pastes << edited_paste

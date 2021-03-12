@@ -16,7 +16,7 @@ fn test_user_exists () ? {
 fn test_get_user () ? {
 	mut result := endpoints.get_user(username) ?
 	assert result is types.RawUser
-	if result is types.RawUser {
+	if mut result is types.RawUser {
 		assert result.username == username
 	}
 }
