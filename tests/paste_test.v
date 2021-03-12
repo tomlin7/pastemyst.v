@@ -1,6 +1,7 @@
 module tests
 
 import os
+import venv
 
 import billyeatcookies.pastemyst.endpoints
 import billyeatcookies.pastemyst.types
@@ -25,6 +26,8 @@ const sample_pasty = types.Pasty{
 	language: "plain text",
 	code: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 }
+
+venv.load_env(overwrite: false)
 const api_token = os.getenv('API_TOKEN')
 
 fn testsuite_begin () {

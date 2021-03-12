@@ -1,10 +1,12 @@
 module tests
 
 import os
+import venv
 
 import billyeatcookies.pastemyst.endpoints
 import billyeatcookies.pastemyst.types
 
+venv.load_env(overwrite: false)
 const username = os.getenv('API_USERNAME')
 
 fn testsuite_begin () {
