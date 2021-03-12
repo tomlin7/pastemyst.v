@@ -100,7 +100,7 @@ fn test_edit_paste () {
 			tags       : "edit, test",
 			pasties    : [sample_pasty]
 		}
-		mut edited_paste = endpoints.edit_paste(id: paste._id, edit: desired_edit, token: api_token) ?
+		mut edited_paste := endpoints.edit_paste(id: paste._id, edit: desired_edit, token: api_token) ?
 
 		assert edited_paste !is bool
 		if edited_paste !is bool {

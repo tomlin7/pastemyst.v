@@ -8,7 +8,7 @@ import billyeatcookies.pastemyst.types
 
 const time_endpoint_expires_in_to_unix_time = "$pastemyst.main_endpoint/time/expiresInToUnixTime"
 
-type ExpiresInToUnixTimeStampReturnType = types.RawTime | bool
+type ExpiresInToUnixTimeStampReturnType = int | bool
 
 pub struct ExpiresInToUnixTimeStampConfig {
 	created_at int
@@ -23,7 +23,8 @@ pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?Exp
 		response := request.do() ?
 
 		if response.status_code == int(http.Status.ok) {
-			return json.decode(types.RawTime, response.text)
+			mut expiry := json.decode(types.RawTime, response.text)
+			return expiry.result
 		} else {
 			println("Error while converting passed arguments to unix timestamp")
 			return false

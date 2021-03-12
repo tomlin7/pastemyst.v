@@ -34,7 +34,7 @@ fn test_expires_in_to_unix_timestamp () {
 		mut expiry := endpoints.expires_in_to_unix_timestamp(
 			created_at : preferred_test.created_at,
 			expires_in : preferred_test.expires_in
-		)
-		assert expiry.result == preferred_test.expected
+		) ?
+		assert expiry == preferred_test.expected
 	}
 }
