@@ -8,8 +8,6 @@ import billyeatcookies.pastemyst.types
 const username = os.getenv('API_USERNAME')
 
 fn testsuite_begin () {
-	
-	println("#############" + username + "#############")
 	println("No API username was set, related tests will be skipped.")
 }
 
