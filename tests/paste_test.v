@@ -3,7 +3,20 @@ module tests
 import billyeatcookies.pastemyst.endpoints
 import billyeatcookies.pastemyst.types
 
-const created_pastes = []types.Paste{}
+
+struct Client {
+mut:
+    created_pastes []types.Paste
+}
+
+fn (mut client Client) add_paste (paste types.Paste) {
+    client.created_pastes << paste
+}
+fn (mut c Client) get_all_created_pastes () ?[]string {
+    return created_pastes.pastes
+}
+
+const client := Client{}
 
 const sample_pasty = types.Pasty{
 	title: "Test Pasty",
@@ -51,7 +64,7 @@ fn test_create_public_paste () ? {
 	if mut created_paste is types.RawPaste {
 		assert created_paste.title == title
 		
-		created_pastes << created_paste
+		client.add_paste(created_paste)
 	}
 }
 
@@ -71,7 +84,7 @@ fn test_create_private_paste () ? {
 		assert created_paste.title == title
 		assert created_paste.is_private == true
 
-		created_pastes << created_paste
+		client.add_paste(created_paste)
 	}
 }
 
@@ -110,7 +123,7 @@ fn test_edit_paste () ? {
 		if mut edited_paste is types.RawPaste {
 			assert editedPaste.title == desiredTitle
 
-			created_pastes << edited_paste
+			client.add_paste(created_paste)
 		}
 	}
 }
@@ -119,7 +132,7 @@ fn test_edit_paste () ? {
 fn testsuite_end () ? {
 	if created_pastes.len > 0 {
 		println("==== Paste Cleanup ====")
-		for created_paste in created_pastes {
+		for created_paste in client.get_all_created_pastes {
 			println("Cleaning up paste with id: $created_paste.id, title: $created_paste.title")
 			mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
 			if is_paste_deleted {
