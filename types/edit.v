@@ -4,7 +4,7 @@ struct RawEdit {
 pub:
 	id        string   [json: _id]
 	edit_id   string   [json: editId]
-	edit_type int      [json: editType]
+	edit_type EditType [json: editType]
 	metadata  []string [json: metadata]
 	edit      string   [json: edit]
 	edited_at int      [json: editedAt]
