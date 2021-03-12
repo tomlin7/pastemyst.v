@@ -1,5 +1,7 @@
 module types
 
+import json
+
 pub struct RawUser {
 pub:
 	id               string  [json: _id]

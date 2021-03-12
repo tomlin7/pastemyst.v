@@ -1,5 +1,7 @@
 module types
 
+import json
+
 struct RawEdit {
 pub:
 	id        string   [json: _id]

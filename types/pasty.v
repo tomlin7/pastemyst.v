@@ -1,5 +1,7 @@
 module types
 
+import json
+
 struct RawPasty {
 pub: 
 	id       string [json: _id]

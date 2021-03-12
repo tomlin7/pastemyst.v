@@ -1,5 +1,7 @@
 module types
 
+import json
+
 pub struct RawLanguage {
 pub: 
 	name  string   [json: name]
