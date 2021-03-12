@@ -5,7 +5,7 @@ import billyeatcookies.pastemyst.types
 
 const username = $env('API_USERNAME')
 
-fn testsuite_begin {
+fn testsuite_begin () {
 	println("No API username was set, related tests will be skipped.")
 }
 
