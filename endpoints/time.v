@@ -23,7 +23,7 @@ pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?Exp
 		response := request.do() ?
 
 		if response.status_code == int(http.Status.ok) {
-			mut expiry := json.decode(types.RawTime, response.text)
+			mut expiry := json.decode(types.RawTime, response.text) ?
 			return expiry.result
 		} else {
 			println("Error while converting passed arguments to unix timestamp")
