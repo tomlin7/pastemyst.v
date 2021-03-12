@@ -1,48 +1,117 @@
 module tests
 
-// tests
+import billyeatcookies.pastemyst.endpoints
+import billyeatcookies.pastemyst.types
 
-// get public paste
-// println("Getting paste")
-// println(get_paste(id: '99is6n23'))
+const created_pastes = []types.Paste{}
 
-// get private paste
-// println("Getting private paste")
-// println(get_paste(id: 'xc9mvyaq', token: 'token'))
+const sample_pasty = types.Pasty{
+	title: "Test Pasty",
+	language: "plain text",
+	code: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+}
+const api_token = $env('API_TOKEN')
 
-// create public paste 
+fn test_get_public_paste () {
+	mut paste := endpoints.get_paste(id: "99is6n23") ?
 
-// fn main () {
-//     mut new_pasty := Pasty {
-//         language: "autodetect"
-//         title   : "test"
-//         code    : "print('test')"
-//     }
-//     mut new_paste := Paste {
-//         title   : "test"
-//         pasties : [new_pasty]
-//     }
+	assert paste !is bool
+	assert paste.title == "public paste example title" 
+}
 
-//     mut result := create_paste(paste: new_paste) ?
-//     print(result.str())
-// }
+fn test_get_private_paste () {
+	mut paste := endpoints.get_paste(id: "grajzo1h", token: api_token) ?
 
-// create private paste 
+	assert paste !is bool
+	assert paste.title == "private paste example title" 
+}
 
-// fn main () {
-//     mut new_pasty := Pasty {
-//         language: "autodetect"
-//         title   : "test"
-//         code    : "print('test')"
-//     }
-//     mut new_paste := Paste {
-//         title   : "test"
-//         pasties : [new_pasty]
-//     }
+fn test_create_public_paste () {
+	mut title     := "[pastemyst.v] Public Paste Create Test"
+	mut new_paste := types.Paste {
+		title      : title,
+		expires_in : "1h",
+		pasties    : [sample_pasty]
+	}
 
-//     mut result := create_paste(paste: new_paste, token: "token") ?
-//     print(result.str())
-// }
+	mut created_paste := endpoints.create_paste(paste: new_paste) ?
 
-// delete a paste
+	assert created_paste !is bool
+	if created_paste !is bool {
+		assert created_paste.title == title
+		
+		created_pastes << created_paste
+	}
+}
 
+fn test_create_private_paste () {
+	mut title     := "[pastemyst.v] Private Paste Create Test"
+	mut new_paste := types.Paste {
+		title      : title,
+		expires_in : "1h",
+		is_private : true
+		pasties    : [sample_pasty]
+	}
+
+	created_paste := endpoints.created_paste(paste: new_paste, token: api_token) ?
+
+	assert created_paste !is bool
+	if created_paste !is bool {
+		assert created_paste.title == title
+		assert created_paste.is_private == true
+
+		created_pastes << created_paste
+	}
+}
+
+
+fn test_delete_paste () {
+	mut new_paste := types.Paste {
+		pasties   : [sample_pasty]
+	}
+	mut created_paste := endpoints.create_paste(paste: new_paste) ?
+
+	assert created_paste !is bool
+	if created_paste !is bool {
+		mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
+		assert is_paste_deleted == true
+	}
+}
+
+fn test_edit_paste () {
+	mut new_paste := types.Paste {
+		pasties   : [sample_pasty]
+	}
+	mut created_paste := endpoints.create_paste(paste: new_paste) ?
+
+	assert created_paste !is bool
+
+	if created_paste !is bool {
+		mut desired_title := "[pastemyst.v] Paste Edit Test"
+		mut desired_edit  := types.Edit {
+			title      : desired_title,
+			tags       : "edit, test",
+			pasties    : [sample_pasty]
+		}
+		mut edited_paste = endpoints.edit_paste(id: paste._id, edit: desired_edit, token: api_token) ?
+
+		assert edited_paste !is bool
+		if edited_paste !is bool {
+			assert editedPaste.title == desiredTitle
+
+			created_pastes << edited_paste
+		}
+	}
+}
+
+
+fn testsuite_end () {
+	if created_pastes.len > 0 {
+		println("==== Paste Cleanup ====")
+		for create_paste in created_pastes {
+			println("Cleaning up paste with id: $created_paste.id, title: $created_paste.title")
+			mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
+		}
+		println("=======================")
+	}
+}
