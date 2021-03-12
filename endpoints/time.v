@@ -1,5 +1,6 @@
 module endpoints
 
+import json
 import net.http
 
 import billyeatcookies.pastemyst
@@ -7,13 +8,14 @@ import billyeatcookies.pastemyst.types
 
 const time_endpoint_expires_in_to_unix_time = "$pastemyst.main_endpoint/time/expiresInToUnixTime"
 
+type ExpiresInToUnixTimeStampReturnType = types.RawTime | bool
 
 pub struct ExpiresInToUnixTimeStampConfig {
 	created_at int
 	expires_in types.ExpiresIn
 }
 
-pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?string {
+pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?ExpiresInToUnixTimeStampReturnType {
 	if config.created_at == 0 {
 		return error("Invalid arguments passed or arguments passed are not enough")
 	} else {
@@ -21,9 +23,10 @@ pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?str
 		response := request.do() ?
 
 		if response.status_code == int(http.Status.ok) {
-			return response.text
+			return json.decode(types.RawTime, response.text)
 		} else {
-			return error("Error while converting passed arguments to unix timestamp")
+			println("Error while converting passed arguments to unix timestamp")
+			return false
 		}
 	}
 }

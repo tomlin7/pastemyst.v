@@ -15,12 +15,15 @@ pub fn user_exists (username string) ?bool {
 	return response.status_code == int(http.Status.ok)
 }
 
-pub fn get_user(username string) ?types.RawUser {
+type GetUserReturnType = types.RawUser | bool
+
+pub fn get_user(username string) ?GetUserReturnType {
 	mut request := http.new_request(.get, user_endpoint + username, "") ?
 	response := request.do() ?
 	if response.status_code == int(http.Status.ok) {
 		return json.decode(types.RawUser, response.text)
 	} else {
-		return error("Error while fetching user with the name $username")
+		println("Error while fetching user with the name $username")
+		return false
 	}
 }
