@@ -19,7 +19,7 @@ pub struct GetPasteConfig {
 pub fn get_paste (config GetPasteConfig) ?types.RawPaste {
 	mut request := http.new_request(.get, get_paste_endpoint + config.id, "") ?
 	request.add_header('Content-Type','application/json')
-	
+
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	}
@@ -36,7 +36,7 @@ pub struct CreatePasteConfig {
 	token string
 }
 
-pub fn create_paste (config CreatePasteConfig) ?types.RawPast {
+pub fn create_paste (config CreatePasteConfig) ?types.RawPaste {
 	mut request := http.new_request(.post, create_paste_endpoint, json.encode(config.paste)) ?
 	request.add_header('Content-Type','application/json')
 	
