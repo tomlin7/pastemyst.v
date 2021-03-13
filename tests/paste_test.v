@@ -26,7 +26,7 @@ const sample_pasty = types.Pasty{
 	code: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 }
 
-const api_token = os.getenv('API_TOKEN')
+const api_token = os.getenv("API_TOKEN")
 
 fn testsuite_begin () {
 	if api_token == "" {
@@ -37,20 +37,12 @@ fn testsuite_begin () {
 
 fn test_get_public_paste () ? {
 	mut paste := endpoints.get_paste(id: "99is6n23") ?
-
-	assert paste is types.RawPaste
-	if mut paste is types.RawPaste {
-		assert paste.title == "public paste example title" 
-	}
+	assert paste.title == "public paste example title" 
 }
 
 fn test_get_private_paste () ? {
-	mut paste := endpoints.get_paste(id: "grajzo1h", token: os.getenv('API_TOKEN')) ?
-
-	assert paste is types.RawPaste
-	if mut paste is types.RawPaste {
-		assert paste.title == "private paste example title" 
-	}
+	mut paste := endpoints.get_paste(id: "grajzo1h", token: api_token) ?
+	assert paste.title == "private paste example title" 
 }
 
 fn test_create_public_paste () ? {
@@ -62,13 +54,8 @@ fn test_create_public_paste () ? {
 	}
 
 	mut created_paste := endpoints.create_paste(paste: new_paste) ?
-
-	assert created_paste is types.RawPaste
-	if mut created_paste is types.RawPaste {
-		assert created_paste.title == title
-		
-		remove_paste(created_paste.id) ?
-	}
+	assert created_paste.title == title
+	// remove_paste(created_paste.id) ?
 }
 
 fn test_create_private_paste () ? {
@@ -81,14 +68,10 @@ fn test_create_private_paste () ? {
 	}
 
 	created_paste := endpoints.create_paste(paste: new_paste, token: api_token) ?
+	assert created_paste.title == title
+	assert created_paste.is_private == true
 
-	assert created_paste is types.RawPaste
-	if mut created_paste is types.RawPaste {
-		assert created_paste.title == title
-		assert created_paste.is_private == true
-
-		remove_paste(created_paste.id) ?
-	}
+	remove_paste(created_paste.id) ?
 }
 
 
@@ -97,38 +80,31 @@ fn test_delete_paste () ? {
 		pasties   : [sample_pasty]
 	}
 	mut created_paste := endpoints.create_paste(paste: new_paste) ?
+	assert created_paste.title == ""
 
-	assert created_paste is types.RawPaste
-	if mut created_paste is types.RawPaste {
-		mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
-		assert is_paste_deleted == true
-	}
+	mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
+	assert mut is_paste_deleted == true
 }
 
 fn test_edit_paste () ? {
 	mut new_paste := types.Paste {
+		is_private: true,
 		pasties   : [sample_pasty]
 	}
-	mut created_paste := endpoints.create_paste(paste: new_paste) ?
+	mut created_paste := endpoints.create_paste(paste: new_paste, token: api_token) ?
+	assert created_paste.token == ""
 
-	assert created_paste is types.RawPaste
-
-	if mut created_paste is types.RawPaste {
-		mut desired_title := "[pastemyst.v] Paste Edit Test"
-		mut desired_edit  := types.Edit {
-			title      : desired_title,
-			tags       : "edit, test",
-			pasties    : [sample_pasty]
-		}
-		mut edited_paste := endpoints.edit_paste(id: created_paste.id, edit: desired_edit, token: api_token) ?
-
-		assert edited_paste is types.RawPaste
-		if mut edited_paste is types.RawPaste {
-			assert edited_paste.title == desired_title
-
-			remove_paste(created_paste.id) ?
-		}
+	mut desired_title := "[pastemyst.v] Paste Edit Test"
+	mut desired_edit  := types.Edit {
+		title      : desired_title,
+		is_private : true,
+		tags       : "edit, test",
+		pasties    : [sample_pasty]
 	}
+	mut edited_paste := endpoints.edit_paste(id: created_paste.id, edit: desired_edit, token: api_token) ?
+	assert edited_paste.title == desired_title
+
+	remove_paste(created_paste.id) ?
 }
 
 fn remove_paste(id string) ? {
