@@ -23,7 +23,6 @@ pub fn get_user(username string) ?GetUserReturnType {
 	if response.status_code == int(http.Status.ok) {
 		return json.decode(types.RawUser, response.text)
 	} else {
-		println("Error while fetching user with the name $username")
-		return false
+		return error("Error while fetching user with the name $username")
 	}
 }
