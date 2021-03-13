@@ -29,9 +29,6 @@ const sample_pasty = types.Pasty{
 const api_token = os.getenv('API_TOKEN')
 
 fn testsuite_begin () {
-	println(api_token)
-	println("getting manually")
-	println(os.getenv('API_TOKEN'))
 	if api_token == "" {
 		println("No API token was supplied in the environment variables. " + "Unit tests that require authorization may not pass.")
 	}
@@ -48,7 +45,7 @@ fn test_get_public_paste () ? {
 }
 
 fn test_get_private_paste () ? {
-	mut paste := endpoints.get_paste(id: "grajzo1h", token: api_token) ?
+	mut paste := endpoints.get_paste(id: "grajzo1h", token: os.getenv('API_TOKEN')) ?
 
 	assert paste is types.RawPaste
 	if mut paste is types.RawPaste {
