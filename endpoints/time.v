@@ -19,7 +19,7 @@ pub struct ExpiresInToUnixTimeStampConfig {
 	expires_in types.ExpiresIn
 }
 
-/**
+/* expires_in_to_unix_timestamp
  * Converts an `expires_in` value to a specified paste expiry time.
  *
  * PARAM: created_at; The unix timestamp of a creation date.

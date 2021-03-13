@@ -14,7 +14,7 @@ import billyeatcookies.pastemyst.types
 
 const user_endpoint = "$pastemyst.main_endpoint/user/"
 
-/**
+/* user_exists
  * Checks if a user with the specified name exists.
  *
  * PARAM: username; The name to check.
@@ -26,7 +26,7 @@ pub fn user_exists (username string) ?bool {
 	return response.status_code == int(http.Status.ok)
 }
 
-/**
+/* get_user
  * Retrieves a user by their name. Returns undefined if no user can be found.
  *
  * NOTE: Users with private profiles are hidden from the public API,

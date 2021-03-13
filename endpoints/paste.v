@@ -22,7 +22,7 @@ pub struct GetPasteConfig {
 	token string
 }
 
-/**
+/* get_paste
  * Fetches a paste by its ID.
  *
  * NOTE: if you want to fetch a private paste, you need to authorize
@@ -63,8 +63,6 @@ pub struct CreatePasteConfig {
  * PARAM: token; Personal API token used to authorize the request.
  * RETURNS: types.RawPaste; The created RawPaste object or none if no paste was found.
  */
-
-// create_paste creates a paste
 pub fn create_paste (config CreatePasteConfig) ?types.RawPaste {
 	mut request := http.new_request(.post, create_paste_endpoint, json.encode(config.paste)) ?
 	request.add_header('Content-Type','application/json')
@@ -88,7 +86,7 @@ pub struct DeletePasteConfig {
 	token string [required]
 }
 
-/**
+/* delete_paste
  * Deletes the paste with the specified ID.
  *
  * NOTE: You can only delete pastes tied to your account. To ensure this, you 
@@ -123,7 +121,7 @@ pub struct EditPasteConfig {
 	token string [required]
 }
 
-/**
+/* edit_paste
  * Applies a set of changes to an existing paste.
  *
  * NOTE: You can only edit pastes tied to your own account. To ensure this,

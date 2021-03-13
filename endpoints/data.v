@@ -19,7 +19,7 @@ pub struct GetLanguageConfig {
 	extension string
 }
 
-/**
+/* get_language
  * Retrieves the language definition for a specified language.
  *
  * PARAM: The name or extension of the language to look up.
