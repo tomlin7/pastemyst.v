@@ -83,7 +83,7 @@ fn test_delete_paste () ? {
 	assert created_paste.title == ""
 
 	mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
-	assert mut is_paste_deleted == true
+	assert is_paste_deleted == true
 }
 
 fn test_edit_paste () ? {

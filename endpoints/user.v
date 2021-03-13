@@ -15,9 +15,7 @@ pub fn user_exists (username string) ?bool {
 	return response.status_code == int(http.Status.ok)
 }
 
-type GetUserReturnType = types.RawUser | bool
-
-pub fn get_user(username string) ?GetUserReturnType {
+pub fn get_user(username string) ?types.RawUser {
 	mut request := http.new_request(.get, user_endpoint + username, "") ?
 	response := request.do() ?
 	if response.status_code == int(http.Status.ok) {
