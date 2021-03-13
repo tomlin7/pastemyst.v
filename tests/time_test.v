@@ -3,12 +3,18 @@ module tests
 import billyeatcookies.pastemyst.endpoints
 import billyeatcookies.pastemyst.types
 
+/**
+ * Template object for tests.
+ */
 struct TestTemplate {
 	created_at int
 	expires_in types.ExpiresIn
 	expected   int
 }
 
+/**
+ * Calculates expiry time.
+ */
 fn test_expires_in_to_unix_timestamp () ? {
 	mut test_a := TestTemplate {
 		created_at : 1615242814,

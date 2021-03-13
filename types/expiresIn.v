@@ -1,5 +1,8 @@
 module types
 
+/**
+ * Indicates when a paste will expire.
+ */
 pub enum ExpiresIn {
 	never
 	one_hour
@@ -12,6 +15,9 @@ pub enum ExpiresIn {
 	one_year
 }
 
+/**
+ * Get the reserved value of ExpiresIn enum members.
+ */
 pub fn (e ExpiresIn) str() string {
     return match e {
         .never      { "never" }
