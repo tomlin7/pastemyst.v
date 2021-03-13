@@ -92,9 +92,10 @@ pub fn edit_paste (config EditPasteConfig) ?types.RawPaste {
 		return error("Token not provided, editing is an account only feature.")
 	}
 	response := request.do() ?
-	if response.status_code == int(http.Status.ok) {
-		return json.decode(types.RawPaste, response.text)
-	} else {
-		return error("Error occured while editing paste")
-	}
+	return json.decode(types.RawPaste, response.text)
+	// if response.status_code == int(http.Status.ok) {
+	// 	return json.decode(types.RawPaste, response.text)
+	// } else {
+	// 	return error("Error occured while editing paste")
+	// }
 }
