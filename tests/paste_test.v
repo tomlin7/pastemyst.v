@@ -77,10 +77,11 @@ fn test_create_private_paste () ? {
 
 fn test_delete_paste () ? {
 	mut new_paste := types.Paste {
+		is_private: true,
 		pasties   : [sample_pasty]
 	}
-	mut created_paste := endpoints.create_paste(paste: new_paste) ?
-	assert created_paste.title == ""
+	mut created_paste := endpoints.create_paste(paste: new_paste, token: api_token) ?
+	assert created_paste.title == "(Untitled)"
 
 	mut is_paste_deleted := endpoints.delete_paste(id: created_paste.id, token: api_token) ?
 	assert is_paste_deleted == true
@@ -92,14 +93,11 @@ fn test_edit_paste () ? {
 		pasties   : [sample_pasty]
 	}
 	mut created_paste := endpoints.create_paste(paste: new_paste, token: api_token) ?
-	assert created_paste.title == ""
+	assert created_paste.title == "(Untitled)"
 
 	mut desired_title := "[pastemyst.v] Paste Edit Test"
 	mut desired_edit  := types.Edit {
-		title      : desired_title,
-		is_private : true,
-		tags       : "edit, test",
-		pasties    : [sample_pasty]
+		title: desired_title
 	}
 	mut edited_paste := endpoints.edit_paste(id: created_paste.id, edit: desired_edit, token: api_token) ?
 	assert edited_paste.title == desired_title
