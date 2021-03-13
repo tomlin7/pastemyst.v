@@ -28,7 +28,7 @@ jobs:
       - name: Set Environmental Variables
         run: |
           export API_USERNAME= ${{ secrets.API_USERNAME }}
-          export API_TOKEN=${{ secrets.API_TOKEN }}
+          export API_TOKEN= ${{ secrets.API_TOKEN }}
       - name: Test PasteMyst
         env:
           API_USERNAME: ${{ secrets.API_USERNAME }}

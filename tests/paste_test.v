@@ -29,6 +29,9 @@ const sample_pasty = types.Pasty{
 const api_token = os.getenv('API_TOKEN')
 
 fn testsuite_begin () {
+	println(api_token)
+	println("getting manually")
+	println(os.getenv('API_TOKEN'))
 	if api_token == "" {
 		println("No API token was supplied in the environment variables. " + "Unit tests that require authorization may not pass.")
 	}
