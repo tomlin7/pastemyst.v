@@ -63,6 +63,8 @@ pub struct CreatePasteConfig {
  * PARAM: token; Personal API token used to authorize the request.
  * RETURNS: types.RawPaste; The created RawPaste object or none if no paste was found.
  */
+
+// create_paste creates a paste
 pub fn create_paste (config CreatePasteConfig) ?types.RawPaste {
 	mut request := http.new_request(.post, create_paste_endpoint, json.encode(config.paste)) ?
 	request.add_header('Content-Type','application/json')
