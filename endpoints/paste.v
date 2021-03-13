@@ -52,7 +52,7 @@ pub struct CreatePasteConfig {
 	token string
 }
 
-/**
+/* create_paste
  * Creates a new paste using the specified fields.
  *
  * NOTE: If you want the paste to be tied to your account, or want it
