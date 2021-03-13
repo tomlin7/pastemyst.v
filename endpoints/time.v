@@ -8,14 +8,12 @@ import billyeatcookies.pastemyst.types
 
 const time_endpoint_expires_in_to_unix_time = "$pastemyst.main_endpoint/time/expiresInToUnixTime"
 
-type ExpiresInToUnixTimeStampReturnType = int | bool
-
 pub struct ExpiresInToUnixTimeStampConfig {
 	created_at int
 	expires_in types.ExpiresIn
 }
 
-pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?ExpiresInToUnixTimeStampReturnType {
+pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?int {
 	if config.created_at == 0 {
 		return error("Invalid arguments passed or arguments passed are not enough")
 	} else {
@@ -26,8 +24,7 @@ pub fn expires_in_to_unix_timestamp (config ExpiresInToUnixTimeStampConfig) ?Exp
 			mut expiry := json.decode(types.RawTime, response.text) ?
 			return expiry.result
 		} else {
-			println("Error while converting passed arguments to unix timestamp")
-			return false
+			return error("Error while converting passed arguments to unix timestamp")
 		}
 	}
 }
