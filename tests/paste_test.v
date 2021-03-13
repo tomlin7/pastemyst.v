@@ -92,7 +92,7 @@ fn test_edit_paste () ? {
 		pasties   : [sample_pasty]
 	}
 	mut created_paste := endpoints.create_paste(paste: new_paste, token: api_token) ?
-	assert created_paste.token == ""
+	assert created_paste.title == ""
 
 	mut desired_title := "[pastemyst.v] Paste Edit Test"
 	mut desired_edit  := types.Edit {

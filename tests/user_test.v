@@ -3,7 +3,6 @@ module tests
 import os
 
 import billyeatcookies.pastemyst.endpoints
-import billyeatcookies.pastemyst.types
 
 const username = os.getenv("API_USERNAME")
 
