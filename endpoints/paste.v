@@ -98,7 +98,7 @@ pub fn edit_paste (config EditPasteConfig) ?EditPasteReturnType {
 	if response.status_code != int(http.Status.not_found) {
 		return json.decode(types.RawPaste, response.text)
 	} else {
-		println("Error occured while creating paste")
+		println("Error occured while editing paste")
 		return false
 	}
 }
