@@ -11,35 +11,32 @@ const create_paste_endpoint = "$pastemyst.main_endpoint/paste"
 const delete_paste_endpoint = "$pastemyst.main_endpoint/paste/"
 const edit_paste_endpoint   = "$pastemyst.main_endpoint/paste/"
 
-type GetPasteReturnType = types.RawPaste | bool
-
 pub struct GetPasteConfig {
 	id    string [required]
 	token string
 }
 
-pub fn get_paste (config GetPasteConfig) ?GetPasteReturnType {
+pub fn get_paste (config GetPasteConfig) ?types.RawPaste {
 	mut request := http.new_request(.get, get_paste_endpoint + config.id, "") ?
+	request.add_header('Content-Type','application/json')
+	
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	}
 	response := request.do() ?
-	if response.status_code != int(http.Status.not_found) {
+	if response.status_code == int(http.Status.ok) {
 		return json.decode(types.RawPaste, response.text)
 	} else {
-		println("Paste not found, check the id and token given")
-		return false
+		return error("Paste not found, check the id and token given")
 	}
 }
-
-type CreatePasteReturnType = types.RawPaste | bool
 
 pub struct CreatePasteConfig {
 	paste types.Paste  [required]
 	token string
 }
 
-pub fn create_paste (config CreatePasteConfig) ?CreatePasteReturnType {
+pub fn create_paste (config CreatePasteConfig) ?types.RawPast {
 	mut request := http.new_request(.post, create_paste_endpoint, json.encode(config.paste)) ?
 	request.add_header('Content-Type','application/json')
 	
@@ -50,11 +47,10 @@ pub fn create_paste (config CreatePasteConfig) ?CreatePasteReturnType {
 		request.add_header("Authorization", config.token)
 	}
 	response := request.do() ? 
-	if response.status_code != int(http.Status.not_found) {
+	if response.status_code == int(http.Status.ok) {
 		return json.decode(types.RawPaste, response.text)
 	} else {
-		println("Error occured while creating paste")
-		return false
+		return error("Error occured while creating paste")
 	}
 }
 
@@ -65,6 +61,8 @@ pub struct DeletePasteConfig {
 
 pub fn delete_paste (config DeletePasteConfig) ?bool {
 	mut request := http.new_request(.delete, delete_paste_endpoint + config.id, "") ?
+	request.add_header('Content-Type','application/json')
+
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	} else {
@@ -72,33 +70,31 @@ pub fn delete_paste (config DeletePasteConfig) ?bool {
 	}
 	response := request.do() ?
 	if response.status_code != int(http.Status.ok) {
-		println("Error occured while deleting paste")
+		println("Error occured while deleting paste $config.id")
 	}
 	return response.status_code == int(http.Status.ok)
 }
 
 
-type EditPasteReturnType = types.RawPaste | bool
-
-
 pub struct EditPasteConfig {
 	id    string [required]
-	edit  types.Edit   [required]
+	edit  types.Edit [required]
 	token string [required]
 }
 
-pub fn edit_paste (config EditPasteConfig) ?EditPasteReturnType {
+pub fn edit_paste (config EditPasteConfig) ?types.RawPaste {
 	mut request := http.new_request(.patch, edit_paste_endpoint + config.id, json.encode(config.edit)) ?
+	request.add_header('Content-Type','application/json')
+
 	if config.token != "" {
 		request.add_header("Authorization", config.token)
 	} else {
 		return error("Token not provided, editing is an account only feature.")
 	}
 	response := request.do() ?
-	if response.status_code != int(http.Status.not_found) {
+	if response.status_code == int(http.Status.ok) {
 		return json.decode(types.RawPaste, response.text)
 	} else {
-		println("Error occured while editing paste")
-		return false
+		return error("Error occured while editing paste")
 	}
 }
